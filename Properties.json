@@ -1,0 +1,20 @@
+{
+  "gridSizeX":"128",
+  "gridSizeY":"80",
+  "canvasSizeX":"",
+  "canvasSizeY":"",
+  "boxSize":"3",
+  "scheduling":"2",
+  "nbTicks":"",
+  "time":"10",
+  "seed":"200",
+  "refresh":"1",
+  "grid":"",
+  "nSharks":"1000",
+  "nFishs":"800",
+  "fGestation":"2",
+  "sGestation":"7",
+  "sTime":"5",
+  "displayGraph":"1",
+  "sIntervale":"1000"
+}

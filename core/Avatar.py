@@ -34,9 +34,9 @@ class Avatar(Agent):
             elif key == keyboard.Key.down:
                 self.vector = (self.vector[0], -1)
             elif key == keyboard.Key.left:
-                self.vector = (self.vector[1], -1)
+                self.vector = (-1, self.vector[1])
             elif key == keyboard.Key.right:
-                self.vector = (self.vector[1], 1)
+                self.vector = (1, self.vector[1])
         except AttributeError:
             print('special key {0} pressed'.format(
                 key))

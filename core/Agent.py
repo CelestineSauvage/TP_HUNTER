@@ -9,6 +9,7 @@ class Agent:
         # position initiale de la particule
         self.posX = posX
         self.posY = posY
+        self.life = 1
 
     def decide(self, env):
         """

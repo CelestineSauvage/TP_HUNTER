@@ -1,14 +1,14 @@
 {
-  "gridSizeX":"128",
-  "gridSizeY":"80",
+  "gridSizeX":"10",
+  "gridSizeY":"10",
   "canvasSizeX":"",
   "canvasSizeY":"",
-  "boxSize":"3",
+  "boxSize":"20",
   "scheduling":"2",
   "nbTicks":"",
-  "time":"10",
-  "seed":"200",
+  "time":"5000",
+  "seed":"",
   "refresh":"1",
   "grid":"",
-  "sHunter":"10"
+  "sHunter":"3"
 }

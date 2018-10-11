@@ -19,10 +19,10 @@ class Env:
         self.l_agents =[]
         self.size = size
 
-        self.vector = [(-1,-1), (0,-1), (-1,1), (1,0), (1,-1), (0,1), (-1,0), (1,1)]
+        self.vector = [(0,-1), (1,0), (0,1), (-1,0)]
 
         #Initialisation de la grille
-        self.grid = np.array([[(None, -1)] * (self.h) for _ in range(self.l)])
+        self.grid = [[(None, -1)] * (self.h) for _ in range(self.l)]
 
     #############################################
     #   Opération primitive sur l'environement  #
@@ -38,12 +38,12 @@ class Env:
         """
         Set un agent à la position x, y sur la grille
         """
-        self.grid[posX][posY][0]=agent
+        self.grid[posX][posY]=(agent, self.getPosition(posX,posY)[1])
 
-    def setPositionValue(self, posX, posY, value):
+    def setValue(self, posX, posY, value):
         """
         """
-        self.grid[posX][posY][1] = value
+        self.grid[posX][posY] = (self.grid[posX][posY], value)
 
     def unsetAgent(self, posX, posY):
         """
@@ -57,7 +57,7 @@ class Env:
 
     def generate(self, n, classAgent, data=[]):
         """
-        Place n agent aléatoirement sur la grille
+        Place n agent(s) aléatoirement sur la grille
         """
         i = 0
 
@@ -76,47 +76,52 @@ class Env:
         """
         Set un agent à la position x, y sur la grille
         """
-        if self.getPosition(posX, posY)[0] == None:
+        if (self.getPosition(posX, posY))[0] == None:
             self.unsetAgent(agent.posX, agent.posY)
 
             self.setPosition(agent, posX, posY)
 
     def resetValue(self):
         """
+        Set toutes les valeurs de la grille à -1
         """
         for width in self.grid:
             for pos in width:
-                pos[1] = -1
+                pos = (pos[0], -1)
 
-    def updateValues(self, posX, posY):
+    def updateValues(self, x, y):
         """
+        Par rapport à des coordonnées, déploie l'algorithme de Algo de Dijkstra, càd donne une valeur à chaque case de la grille suivant sa proximité avec la cible en posX,posY
         """
-        self.resetValue()
-        fil = list()
-        count  = 0
+        self.resetValue() #reset des valeurs
+        fil = list() # file pour les cases
+        count  = 0 # valeur à mettre sur la case
 
         for vector in self.vector:
-            xp, yp = (x+dx+self.l) % self.l, (y+dy+self.h) % self.h
+            xp, yp = (x+vector[0]+self.l) % self.l, (y+vector[1]+self.h) % self.h
             fil.append((xp, yp))
-        
-        while fil :
+
+        while fil : # tant qu'il y a des cases à compléter
             #Compteur du parcours
             count +=1
             #Prochaine position à mettre à jour
             newFil = list()
-            
+
+            print("coucou")
             #On parcours les positions à mettre à jour
             for case in fil:
-                case = self.getPosition(case[0], case[1])
-                if(case[1] != -1 and case[0] != None):
-                    self.setPositionValue(case[0], case[1], count)
+                if(case[1] == -1 and case[0] == None):
+                    self.setValue(case[0][0], case[0][1], count)
 
-                    #On définit les voisin
+                    #On définit les voisins
+                    # newFil += self.near(case[0][0], case[0][1])
                     for vector in self.vector:
-                        xp, yp = (x+dx+self.l) % self.l, (y+dy+self.h) % self.h
+                        xp, yp = (case[0][0]+vector[0]+self.l) % self.l, (case[0][1]+vector[1]+self.h) % self.h
                         newFil.append((xp, yp))
 
             fil = newFil
+        # self.printGrid()
+        return
 
     def near(self, x, y):
         """
@@ -130,10 +135,13 @@ class Env:
             case = self.getPosition(xp, yp)
 
             if case[0] == None:
-                #Si aucun agent on l'ajout dans les positions possible
-                res += [(xp, yp),case[1]]
+                #Si aucun agent on l'ajout dans les positions possibles
+                res += [((xp, yp),case[1])]
 
-        return res 
+        return res
+
+    def canMove(self, x, y):
+        return (self.getPosition(x,y)[0] == None)
 
     def appendAgent(self, agent, posX, posY):
         """
@@ -141,3 +149,13 @@ class Env:
         """
         self.setAgentPosition(agent, posX, posY)
         self.l_agents.append(agent)
+
+    #########
+    # DEBUG #
+    #########
+
+    def printGrid(self):
+        for width in self.grid:
+            for pos in width:
+                print(str(pos),end='', flush=True)
+            print(' ')

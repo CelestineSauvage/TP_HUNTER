@@ -1,25 +1,30 @@
 from core.Agent import Agent
-from pynput import keyboard
 
 """
 """
 class Avatar(Agent):
     def __init__(self, posX, posY, data=[]):
-        # position initiale de la particule
+        # position initiale de l'avatar
         super(Avatar, self).__init__(posX, posY)
-        self.vector = (1,1)
 
-        #Start du thread en parallèle
-        with keyboard.Listener(
-                on_press=self.on_press) as listener:
-            listener.join()
+        # vector de direction (vector[0] = gauche/droite, vector[1] = haut/bas)
+        self.vector = (0,1)
+        self.form = "circle"
+
+        # #Start du thread en parallèle
+        # with keyboard.Listener(
+        #         on_press=self.on_press) as listener:
+        #     listener.join()
 
     def decide(self, env):
         """
-
+        Position de l'avatar suivant la dernière saisie clavier du joueur (monde torique)
         """
-        xp, yp = (posX+self.vector[0]+env.l) % env.l, (posY+self.vector[0]+env.h) % env.h
-        env.setAgentPosition(self, newPos[0], newPos[1])
+        xp, yp = (self.posX+self.vector[0]+env.l) % env.l, (self.posY+self.vector[1]+env.h) % env.h # met à jour la position
+        if (env.canMove(xp, yp)): # regarde si il peut bouger
+            env.setAgentPosition(self, xp, yp)
+            self.posX, self.posY = xp, yp
+            env.updateValues(xp, yp)
 
     def getColor(self):
         """
@@ -29,14 +34,14 @@ class Avatar(Agent):
     def on_press(self, key):
         #On change le vector du pac man
         try:
-            if key == keyboard.Key.up:
-                self.vector = (self.vector[0], 1)
-            elif key == keyboard.Key.down:
-                self.vector = (self.vector[0], -1)
-            elif key == keyboard.Key.left:
-                self.vector = (-1, self.vector[1])
-            elif key == keyboard.Key.right:
-                self.vector = (1, self.vector[1])
+            if key == 0: #down
+                self.vector = (0, 1)
+            elif key == 1: #up
+                self.vector = (0, -1)
+            elif key == 2: #left
+                self.vector = (-1, 0)
+            elif key == 3: #right
+                self.vector = (1, 0)
         except AttributeError:
             print('special key {0} pressed'.format(
                 key))

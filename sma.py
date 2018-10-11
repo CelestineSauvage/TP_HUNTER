@@ -7,8 +7,9 @@ import time
 import json
 
 
-from core.shark import Shark
-from core.fish import Fish
+from core.Hunter import Hunter
+from core.Avatar import Avatar
+from threading import Thread
 
 from pprint import pprint
 
@@ -17,21 +18,17 @@ Contient la méthode run() qui effectue le tour de parole
 """
 class SMA:
 
-    def __init__(self, nFishs, nSharks, fGestation, sGestation, sTime, l, h, size, limite, refresh, time, grid, displayGraph, sIntervale):
+    def __init__(self, l, h, size, limite, refresh, time, grid, nHunter): 
 
         #env
-        self.env = Env(l, h, size, displayGraph,sIntervale)
+        self.env = Env(l, h, size)
 
         #n
-        self.nSharks = nSharks
-        self.nFishs = nFishs
-        self.n = nSharks+nFishs
-
         #liste des agents
-        self.env.generate(nSharks, Shark,[sGestation,sTime]) # liste des agents
-        self.env.generate(nFishs, Fish,[fGestation]) # liste des agents
+        self.env.generate(1, Avatar)
+        self.env.generate(nHunter, Hunter)
 
-        self.view = View(l, h, size, self.env.l_agents, grid)
+        self.view = View(l, h, size, self.env.l_agents)
 
         #nb de tours
         self.nturn = 0
@@ -43,15 +40,13 @@ class SMA:
         # time
         self.time = time
 
-        self.displayGraph = displayGraph
-        self.sIntervale = sIntervale
-
-
     def turn(self):
         """
         Déroulement d'un tour
         """
-        if (self.nturn == self.limite): # nb de tours < limite ?
+        
+        # nb de tours < limite ?
+        if (self.nturn == self.limite): 
             exit()
         self.env.removeDeadAgent()
 
@@ -79,15 +74,10 @@ def parse():
         data = json.load(data_file)
         return data
 
-def main():
+def main(arg):
     data = parse()
     
     # set des valeurs par défault
-    nSharks = 10
-    nFishs = 10
-    fGestation = 5
-    sGestation = 5
-    sTime = 3
     l = 100
     h = 100
     size = 10
@@ -95,8 +85,7 @@ def main():
     refresh = 1
     time = 20
     grid = False
-    displayGraph=False
-    sIntervale=20
+    sHunter=2
 
     # parcours des options saisis par l'utilisateur
     if (data["gridSizeX"]):
@@ -113,30 +102,19 @@ def main():
         random.seed(int(data["seed"]))
     if (data["refresh"]):
         refresh = int(data["refresh"])
-    if (data["nSharks"]):
-        nSharks = int(data["nSharks"])
-    if (data["nFishs"]):
-        nFishs = int(data["nFishs"])
-    if (data["fGestation"]):
-        fGestation = int(data["fGestation"])
-    if (data["sGestation"]):
-        sGestation = int(data["sGestation"])
-    if (data["sTime"]):
-        sTime = int(data["sTime"])
     if (data["time"]):
         speed = int(data["time"])
     if (data["grid"]):
         grid = True
-    if(data["displayGraph"]):
-        displayGraph=True
-    if(data["sIntervale"]):
-        sIntervale=int(data["sIntervale"])
+    if(data["sHunter"]):
+        sHunter=int(data["sHunter"])
 
-    game = SMA(nFishs,nSharks, fGestation, sGestation, sTime,
-     l, h, size, limite, refresh, speed, grid, displayGraph, sIntervale)
+    game = SMA(l, h, size, limite, refresh, speed, grid, sHunter)
     game.run()
 
 
 if __name__ == "__main__":
     # execute only if run as a script
-    main()
+    thread = Thread(target = main, args = (10, ))
+    thread.start()
+    thread.join()

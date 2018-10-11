@@ -2,7 +2,7 @@ from tkinter import *
 
 class View :
 
-    def __init__(self, l, h, size, l_agents, grid):
+    def __init__(self, l, h, size, l_agents):
         self.w = l*(size+1)
         self.h = h*(size+1)
         self.size = size
@@ -14,12 +14,12 @@ class View :
         #canvas
         self.canvas = Canvas(self.window, height=self.h, width=self.w,background='cyan')
         self.canvas.grid(row=1, column=1, sticky='w')
+        self.canvas
         self.grid = 0
         #self.window.configure(background='blue')
         if (grid):
             self.create_grid()
             self.grid = 0.5
-
 
     def create_grid(self, event=None):
         """
@@ -48,16 +48,13 @@ class View :
                 if isInit :
                     self.canvas.delete(agent.circle)
             else:
-                if (isInit ):
-                    if agent.getAge() == 2:
-                        color = agent.getColor()
-                        self.canvas.itemconfig(agent.circle, outline=color, fill=color)
+                if (isInit):
                     self.canvas.coords(agent.circle, (x * self.size)+x + self.grid,
                                                         (y * self.size)+ y+ self.grid,
                                                         (x * self.size) + self.size + x - self.grid,
                                                         (y * self.size) + self.size + y - self.grid)
                 else:
-                    color = agent.getColorBorn()
+                    color = agent.getColor()
                     agent.circle = self.canvas.create_rectangle([(x * self.size)+x+ self.grid,
                                                         (y * self.size)+ y+ self.grid,
                                                         (x * self.size) + self.size + x - self.grid,

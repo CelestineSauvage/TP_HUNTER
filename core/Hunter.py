@@ -1,6 +1,9 @@
 from core.Agent import Agent
 from operator import itemgetter
 
+"""
+
+"""
 class Hunter(Agent):
     def __init__(self, posX, posY, data):
         # position initiale de la particule
@@ -22,8 +25,5 @@ class Hunter(Agent):
                 newPos , = min(nearPos, key=itemgetter(1))
                 env.setAgentPosition(self, newPos[0], newPos[1])
 
-    def getType(self):
-        return 2
-    
     def getColor(self):
         return "red"

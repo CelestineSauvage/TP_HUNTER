@@ -12,7 +12,7 @@ Celui-ci peut-être torique ou non
 """
 
 class Env:
-    def __init__(self, l, h, size, sIntervale):
+    def __init__(self, l, h, size):
         self.l = l
         self.h = h
         self.grid = []
@@ -28,7 +28,7 @@ class Env:
     #   Opération primitive sur l'environement  #
     #############################################
 
-    def getAgent(self, posX, posY):
+    def getPosition(self, posX, posY):
         """
         Retourne ce qu'il y a à la position x,y
         """
@@ -40,6 +40,11 @@ class Env:
         """
         self.grid[posX][posY][0]=agent
 
+    def setPositionValue(self, posX, posY, value):
+        """
+        """
+        self.grid[posX][posY][1] = value
+
     def unsetAgent(self, posX, posY):
         """
         Supprime l'agent de la grille qui se trouve à la position posX, posY
@@ -50,7 +55,7 @@ class Env:
     #   Opération primitive sur les agents  #
     #########################################
 
-    def generate(self, n, classAgent, data):
+    def generate(self, n, classAgent, data=[]):
         """
         Place n agent aléatoirement sur la grille
         """
@@ -61,7 +66,7 @@ class Env:
             # pour chaque agent, on le place aléatoirement sur la map
             posX = random.randint(0, self.l-1)
             posY = random.randint(0, self.h-1)
-            if (self.getAgent(posX, posY) == None): # si pas de bille sur cette case
+            if (self.getPosition(posX, posY)[0] == None): # si pas d'agent
                 agent = classAgent(posX, posY, data)
                 self.setAgentPosition(agent, posX, posY)
                 self.l_agents.append(agent)
@@ -71,14 +76,10 @@ class Env:
         """
         Set un agent à la position x, y sur la grille
         """
-        self.unsetAgent(agent.posX, agent.posY)
+        if self.getPosition(posX, posY)[0] == None:
+            self.unsetAgent(agent.posX, agent.posY)
 
-        self.setPosition(agent, posX, posY)
-
-    def setPositionValue(self, posX, posY, value):
-        """
-        """
-        self.grid[posX][posY][1] = value
+            self.setPosition(agent, posX, posY)
 
     def resetValue(self):
         """
@@ -126,7 +127,7 @@ class Env:
         #On parcours toutes les case adjacent
         for dx, dy in self.vector:
             xp, yp = (x+dx+self.l) % self.l, (y+dy+self.h) % self.h
-            case = self.getAgent(xp, yp)
+            case = self.getPosition(xp, yp)
 
             if case[0] == None:
                 #Si aucun agent on l'ajout dans les positions possible

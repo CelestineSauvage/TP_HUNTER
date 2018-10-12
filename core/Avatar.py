@@ -1,4 +1,5 @@
 from core.Agent import Agent
+from getch import KeyListener
 
 """
 """
@@ -10,11 +11,8 @@ class Avatar(Agent):
         # vector de direction (vector[0] = gauche/droite, vector[1] = haut/bas)
         self.vector = (0,1)
         self.form = "circle"
-
-        # #Start du thread en parallèle
-        # with keyboard.Listener(
-        #         on_press=self.on_press) as listener:
-        #     listener.join()
+        self.keyL = KeyListener(self)
+        self.keyL.start()
 
     def decide(self, env):
         """
@@ -32,6 +30,7 @@ class Avatar(Agent):
         return "yellow"
 
     def on_press(self, key):
+
         #On change le vector du pac man
         try:
             if key == 0: #down

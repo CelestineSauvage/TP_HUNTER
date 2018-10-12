@@ -23,22 +23,18 @@ class KeyListener(Thread):
     def get(self):
             inkey = _Getch()
             while(1):
-                    k=inkey()
-                    if k!='':break
+                    #inkey
+                    k=input()
+                    if k != '':break
             if k=='\x1b[A':
-                    print("up")
                     self.change(1)
             elif k=='\x1b[B':
-                    print("down")
                     self.change(0)
             elif k=='\x1b[C':
-                    print("right")
                     self.change(3)
             elif k=='\x1b[D':
-                    print ("left")
                     self.change(2)
             else:
-                    print("Bye")
                     sys.exit(0)
 
     def change(self, val):
@@ -48,6 +44,3 @@ class KeyListener(Thread):
     def run(self):
         while(1):
             self.get()
-#
-# if __name__=='__main__':
-#         main()

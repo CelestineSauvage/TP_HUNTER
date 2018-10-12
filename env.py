@@ -7,7 +7,8 @@ import numpy as np
 
 
 """
-Environnement sous forme de grille 2D (coordonnées entières et environnement discret) où sont placés les particules.
+Environnement sous forme de grille 2D (coordonnées entières et environnement discret) 
+où sont placés les particules.
 Celui-ci peut-être torique ou non
 """
 
@@ -38,18 +39,24 @@ class Env:
         """
         Set un agent à la position x, y sur la grille
         """
-        self.grid[posX][posY]=(agent, self.getPosition(posX,posY)[1])
+        self.grid[posX][posY]=(agent, self.grid[posX][posY][1])
 
     def setValue(self, posX, posY, value):
         """
         """
-        self.grid[posX][posY] = (self.grid[posX][posY], value)
+        self.grid[posX][posY] = (self.grid[posX][posY][0], value)
 
     def unsetAgent(self, posX, posY):
         """
         Supprime l'agent de la grille qui se trouve à la position posX, posY
         """
-        self.setPosition(None, posX, posY)
+        v =self.grid[posX][posY][1]
+        self.grid[posX][posY]=(None, v)
+
+    def getValue(self, posX, posY):
+        """
+        """
+        return self.grid[posX][posY][1]
 
     ##########################################
     #   Opération primitive sur les agents  #
@@ -76,51 +83,50 @@ class Env:
         """
         Set un agent à la position x, y sur la grille
         """
-        if (self.getPosition(posX, posY))[0] == None:
-            self.unsetAgent(agent.posX, agent.posY)
+        self.unsetAgent(agent.posX, agent.posY)
 
-            self.setPosition(agent, posX, posY)
+        self.setPosition(agent, posX, posY)
 
     def resetValue(self):
         """
         Set toutes les valeurs de la grille à -1
         """
-        for width in self.grid:
-            for pos in width:
-                pos = (pos[0], -1)
+        for x in range(0, self.l, 1):
+            for y in range(0, self.h, 1):
+                self.grid[x][y] = (self.grid[x][y][0], -1)
 
     def updateValues(self, x, y):
         """
-        Par rapport à des coordonnées, déploie l'algorithme de Algo de Dijkstra, càd donne une valeur à chaque case de la grille suivant sa proximité avec la cible en posX,posY
+        Par rapport à des coordonnées, déploie l'algorithme de Algo de Dijkstra, 
+        càd donne une valeur à chaque case de la grille suivant sa proximité avec la cible en posX,posY
         """
         self.resetValue() #reset des valeurs
         fil = list() # file pour les cases
         count  = 0 # valeur à mettre sur la case
 
+        self.grid[x][y]=(self.grid[x][y][0],0)
         for vector in self.vector:
             xp, yp = (x+vector[0]+self.l) % self.l, (y+vector[1]+self.h) % self.h
             fil.append((xp, yp))
-
+        
         while fil : # tant qu'il y a des cases à compléter
             #Compteur du parcours
             count +=1
             #Prochaine position à mettre à jour
             newFil = list()
 
-            print("coucou")
             #On parcours les positions à mettre à jour
-            for case in fil:
+            for pos in fil:
+                case = self.getPosition(pos[0], pos[1])
                 if(case[1] == -1 and case[0] == None):
-                    self.setValue(case[0][0], case[0][1], count)
+                    self.setValue(pos[0], pos[1], count)
 
                     #On définit les voisins
-                    # newFil += self.near(case[0][0], case[0][1])
                     for vector in self.vector:
-                        xp, yp = (case[0][0]+vector[0]+self.l) % self.l, (case[0][1]+vector[1]+self.h) % self.h
+                        xp, yp = (pos[0]+vector[0]+self.l) % self.l, (pos[1]+vector[1]+self.h) % self.h
                         newFil.append((xp, yp))
 
             fil = newFil
-        # self.printGrid()
         return
 
     def near(self, x, y):

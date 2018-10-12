@@ -1,7 +1,7 @@
 #coding: utf-8
 from env import Env
 from view import View
-from getch import KeyListener
+
 from tkinter import *
 import random
 import time
@@ -28,9 +28,7 @@ class SMA:
         #n
         #liste des agents
         self.env.generate(1, Avatar)
-        print(type(self.env.l_agents[0]))
-        self.keyL = KeyListener(self.env.l_agents[0])
-        self.keyL.start()
+
         self.env.generate(nHunter, Hunter, [1])
         self.env.generate((l*h//6), Wall) # 1/6ème de la map est occupée par des murs
 
@@ -54,10 +52,6 @@ class SMA:
         # nb de tours < limite ?
         if (self.nturn == self.limite):
             exit()
-        # self.env.removeDeadAgent()
-        #
-        # if(self.displayGraph):
-        #     self.env.updateGraph()
 
         self.nturn+=1 # on incrémente le nombre de tour
         for i in range(0,self.refresh): # taux de refresh de la page
@@ -66,6 +60,17 @@ class SMA:
                 if(ag.life != 0):
                     ag.decide(self.env)
 
+        for y in range(self.env.h):
+            line = ""
+            for x in range(self.env.l):
+                if self.env.grid[x][y][0] == None:
+                    line += "V| "
+                elif self.env.grid[x][y][0].getColor() == "black":
+                    line += "M| "
+                else:
+                    line += "A| "
+            print(line)
+        print()
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
 
     def run(self):

@@ -10,9 +10,9 @@ class Avatar(Agent):
 
         # vector de direction (vector[0] = gauche/droite, vector[1] = haut/bas)
         self.vector = (0,1)
-        self.form = "circle"
         self.keyL = KeyListener(self)
         self.keyL.start()
+        self.form = "circle"
 
     def decide(self, env):
         """
@@ -28,7 +28,7 @@ class Avatar(Agent):
         """
         """
         return "yellow"
-
+    
     def on_press(self, key):
 
         #On change le vector du pac man

@@ -18,24 +18,20 @@ class Hunter(Agent):
         #notion de délai pour les hunters
         self.current +=1
 
-        if( self.delay == self.current):
+        
+        if self.delay <= self.current :
             self.current = 0
 
             nearPos = env.near(self.posX, self.posY) # essaye de chasser la cible
+
             #Si l'agent peut bouger
-            
             if nearPos:
-                #On récupère la valeur de la case courant
-                minVal = env.getValue(self.posX, self.posY)
-                minPos = (self.posX, self.posY)
-                #On recherche le min
-                for pos, val in nearPos:
-                    if val< minVal:
-                        minPos = pos
-                        minVal = val
-                # newPos = min(nearPos, key=itemgetter(1))
-                env.setAgentPosition(self, minPos[0], minPos[1])
-                self.posX, self.posY = pos
+                nearPos += [(None, env.getValue(self.posX, self.posY))]
+                newPos = min(nearPos, key=itemgetter(1))
+
+                if newPos[0]:
+                    env.setAgentPosition(self, newPos[0][0], newPos[0][1])
+                    self.posX, self.posY = newPos[0]
 
     def getColor(self):
         return "red"

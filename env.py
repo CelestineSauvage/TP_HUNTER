@@ -50,6 +50,7 @@ class Env:
         """
         Supprime l'agent de la grille qui se trouve à la position posX, posY
         """
+        print("On ma appeler")
         v =self.grid[posX][posY][1]
         self.grid[posX][posY]=(None, v)
 

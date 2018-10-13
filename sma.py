@@ -59,7 +59,7 @@ class SMA:
             for ag in self.env.l_agents:
                 if(ag.life != 0):
                     ag.decide(self.env)
-
+        nbAgent =0
         for y in range(self.env.h):
             line = ""
             for x in range(self.env.l):
@@ -68,8 +68,10 @@ class SMA:
                 elif self.env.grid[x][y][0].getColor() == "black":
                     line += "M| "
                 else:
+                    nbAgent +=1
                     line += "A| "
             print(line)
+        print("Nb aggent : ", nbAgent)
         print()
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
 

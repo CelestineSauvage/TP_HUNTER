@@ -50,7 +50,6 @@ class Env:
         """
         Supprime l'agent de la grille qui se trouve à la position posX, posY
         """
-        print("On ma appeler")
         v =self.grid[posX][posY][1]
         self.grid[posX][posY]=(None, v)
 
@@ -162,7 +161,30 @@ class Env:
     #########
 
     def printGrid(self):
-        for width in self.grid:
-            for pos in width:
-                print(str(pos),end='', flush=True)
-            print(' ')
+        # for width in self.grid:
+        #     for pos in width:
+        #         print(str(pos),end='', flush=True)
+        #     print(' ')
+        nbAgent =0
+        val =[]
+        for y in range(self.h):
+            line = ""
+            lineVal = ""
+            for x in range(self.l):
+                if self.grid[x][y][0] == None:
+                    lineVal += str(self.grid[x][y][1])+"| "
+                    line += "V| "
+                elif self.grid[x][y][0].getColor() == "black":
+                    line += "M| "
+                    lineVal += "M| "
+                else:
+                    nbAgent +=1
+                    line += "A| "
+                    lineVal += "M| "
+            val += [lineVal]
+            print(line,end='', flush=True)
+        print()
+        for tmp in val:
+            print(tmp,end='', flush=True)
+        print("Nb aggent : ", nbAgent,end='', flush=True)
+        print()

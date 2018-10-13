@@ -23,13 +23,12 @@ class Hunter(Agent):
             self.current = 0
 
             nearPos = env.near(self.posX, self.posY) # essaye de chasser la cible
-
             #Si l'agent peut bouger
             if nearPos:
-                nearPos += [(None, env.getValue(self.posX, self.posY))]
+                #nearPos += [(None, env.getValue(self.posX, self.posY))]
                 newPos = min(nearPos, key=itemgetter(1))
 
-                if newPos[0]:
+                if newPos[0] != None:
                     env.setAgentPosition(self, newPos[0][0], newPos[0][1])
                     self.posX, self.posY = newPos[0]
 

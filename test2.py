@@ -1,16 +1,12 @@
-import threading, time
+from pynput import keyboard
 
-class reqthread ( threading.Thread ):
-  def __init__ (self):
-    threading.Thread.__init__(self)
+def on_press(key):
+    if key == keyboard.Key.esc:
+        listener.stop()
+    else:
+        print(ord(getattr(key, 'char', '0')))
 
-  def run ( self ):
-    for i in range(0,10):
-      time.sleep(1)
-      print '.'
-
-try:
-  thread=reqthread()
-  thread.start()
-except (KeyboardInterrupt, SystemExit):
-  print '\n! Received keyboard interrupt, quitting threads.\n'
+controller = keyboard.Controller()
+with keyboard.Listener(
+        on_press=on_press) as listener:
+    listener.join()

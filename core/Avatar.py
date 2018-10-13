@@ -19,6 +19,9 @@ class Avatar(Agent):
         Position de l'avatar suivant la dernière saisie clavier du joueur (monde torique)
         """
         xp, yp = (self.posX+self.vector[0]+env.l) % env.l, (self.posY+self.vector[1]+env.h) % env.h # met à jour la position
+        
+        env.updateValues(self.posX, self.posY)
+
         if (env.canMove(xp, yp)): # regarde si il peut bouger
             env.setAgentPosition(self, xp, yp)
             self.posX, self.posY = xp, yp

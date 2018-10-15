@@ -72,7 +72,7 @@ class Env:
         toRm = self.getPosition(posX, posY)[0]
         if (toRm != None):
             self.unsetAgent(posX, posY)
-            toRm.life = 0
+            toRm.dead()
 
     def removeDeadAgent(self):
         """
@@ -83,7 +83,7 @@ class Env:
         size = len(self.l_agents)
         
         for agent  in self.l_agents:
-            if (agent.life != 0):
+            if agent.isAlive():
                 agents.append(agent)
             else:
                 dead.append(agent)

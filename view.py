@@ -44,7 +44,7 @@ class View :
             y = agent.posY
             isInit = self.isCanvasInit(agent)
 
-            if(agent.life == 0):
+            if not agent.isAlive() :
                 if isInit :
                     self.canvas.delete(agent.circle)
             else:

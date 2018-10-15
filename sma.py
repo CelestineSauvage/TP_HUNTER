@@ -46,6 +46,7 @@ class SMA:
         self.time = time
         
         self.defenderLife = defenderLife 
+        self.nbDefender = 0
 
     def turn(self):
         """
@@ -54,25 +55,29 @@ class SMA:
         # nb de tours < limite ?
         if (self.nturn == self.limite):
             exit()
-        if not (self.nturn % self.defenderLife):
+
+        if not (self.nturn % self.defenderLife) and self.nbDefender<4:
             self.env.generate(1, Defender, [self.defenderLife])
+        elif self.nbDefender == 4:
+            self.env.generate(1, Winner)
+
         self.nturn+=1 # on incrémente le nombre de tour
         dead = self.env.removeDeadAgent()
         
+        #On parcours les agent pour voir si un defender est mort
         for agent in dead:
             if agent.getType() == 3:
+                self.nbDefender +=1
                 for agent in self.env.l_agents:
                     agent.fearMode = True
 
         for i in range(0,self.refresh): # taux de refresh de la page
             # TOUR DE TOUS LES AGENTS
             for ag in self.env.l_agents:
-                if(ag.life != 0):
+                if(ag.isAlive()):
                     ag.decide(self.env)
-        self.env.printGrid()
-        self.view.set_agent(self.time, self.env.l_agents, self.turn)
-        
 
+        self.view.set_agent(self.time, self.env.l_agents, self.turn)
 
     def run(self):
         self.view.set_agent(self.time, self.env.l_agents, self.turn)

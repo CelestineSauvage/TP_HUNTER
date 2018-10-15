@@ -9,7 +9,7 @@ class Agent:
         # position initiale de la particule
         self.posX = posX
         self.posY = posY
-        self.life = 1
+        self.life = True
         self.time = 0
         self.fearMode = False
 
@@ -28,3 +28,9 @@ class Agent:
         """
         """
         raise NotImplementedError( "Should have implemented this" )
+
+    def dead(self):
+        self.life = False
+    
+    def isAlive(self):
+        return self.life

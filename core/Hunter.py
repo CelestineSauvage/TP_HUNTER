@@ -15,6 +15,8 @@ class Hunter(Agent):
         self.delay = data[0]
         self.form = "circle"
         self.fearMode = False
+        self.nfear = 0
+        self.maxfear = 5
 
     def decide(self, env):
         #notion de délai pour les hunters
@@ -30,8 +32,12 @@ class Hunter(Agent):
                 
                 #nearPos += [(None, env.getValue(self.posX, self.posY))
                 if not self.fearMode:
+                    self.nfear = 0
                     newPos = min(nearPos, key=itemgetter(2))
                 else:
+                    self.nfear += 1
+                    if self.nfear >= self.maxfear:
+                        self.fearMode = False
                     newPos = max(nearPos, key=itemgetter(2))
 
                 if (newPos[1] != None and newPos[1].getType() == 0):

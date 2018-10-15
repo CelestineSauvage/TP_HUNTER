@@ -47,3 +47,4 @@ class Avatar(Agent):
         except AttributeError:
             print('special key {0} pressed'.format(
                 key))
+    

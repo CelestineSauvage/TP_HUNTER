@@ -18,7 +18,7 @@ class Avatar(Agent):
         Position de l'avatar suivant la dernière saisie clavier du joueur (monde torique)
         """
         xp, yp = (self.posX+self.vector[0]+env.l) % env.l, (self.posY+self.vector[1]+env.h) % env.h # met à jour la position
-        
+
         env.updateValues(self.posX, self.posY)
 
         if (env.canMove(xp, yp)): # regarde si il peut bouger
@@ -30,7 +30,7 @@ class Avatar(Agent):
         """
         """
         return "yellow"
-    
+
     def on_press(self, key):
 
         #On change le vector du pac man
@@ -46,4 +46,6 @@ class Avatar(Agent):
         except AttributeError:
             print('special key {0} pressed'.format(
                 key))
-    
+
+    def getType(self):
+        return 0

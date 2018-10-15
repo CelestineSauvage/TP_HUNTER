@@ -14,3 +14,6 @@ class Wall(Agent):
 
     def getColor(self):
         return "black"
+
+    def getType(self):
+        return 1

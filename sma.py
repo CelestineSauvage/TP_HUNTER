@@ -54,12 +54,14 @@ class SMA:
             exit()
 
         self.nturn+=1 # on incrémente le nombre de tour
+        self.env.removeDeadAgent()
         for i in range(0,self.refresh): # taux de refresh de la page
             # TOUR DE TOUS LES AGENTS
             for ag in self.env.l_agents:
                 if(ag.life != 0):
                     ag.decide(self.env)
-    
+
+        self.env.printGrid()
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
 
     def run(self):

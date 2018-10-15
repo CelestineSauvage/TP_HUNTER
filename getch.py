@@ -20,7 +20,8 @@ class KeyListener(Thread):
         elif k == keyboard.Key.left:
                 self.change(2)
         else:
-                pass
+                print("Bye")
+                sys.exit()
 
     def change(self, val):
         with verrou:

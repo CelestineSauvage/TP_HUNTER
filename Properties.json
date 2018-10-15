@@ -3,12 +3,12 @@
   "gridSizeY":"50",
   "canvasSizeX":"",
   "canvasSizeY":"",
-  "boxSize":"10",
+  "boxSize":"15",
   "scheduling":"2",
   "nbTicks":"",
-  "time":"100",
+  "time":"500",
   "seed":"",
   "refresh":"1",
   "grid":"",
-  "sHunter":"50"
+  "sHunter":"3"
 }

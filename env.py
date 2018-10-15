@@ -7,7 +7,7 @@ import numpy as np
 
 
 """
-Environnement sous forme de grille 2D (coordonnées entières et environnement discret) 
+Environnement sous forme de grille 2D (coordonnées entières et environnement discret)
 où sont placés les particules.
 Celui-ci peut-être torique ou non
 """
@@ -62,6 +62,27 @@ class Env:
     #   Opération primitive sur les agents  #
     #########################################
 
+    def kill(self, posX, posY):
+        """
+        Tue l'agent à la case posX, posY
+        """
+        toRm = self.getPosition(posX, posY)[0]
+        if (toRm != None):
+            self.unsetAgent(posX, posY)
+            toRm.life = 0
+
+    def removeDeadAgent(self):
+        """
+        Permet de supprimer tous les agents morts
+        """
+        agents = []
+        size = len(self.l_agents)
+
+        for agent  in self.l_agents:
+            if (agent.life != 0):
+                agents.append(agent)
+        self.l_agents = agents
+
     def generate(self, n, classAgent, data=[]):
         """
         Place n agent(s) aléatoirement sur la grille
@@ -97,7 +118,7 @@ class Env:
 
     def updateValues(self, x, y):
         """
-        Par rapport à des coordonnées, déploie l'algorithme de Algo de Dijkstra, 
+        Par rapport à des coordonnées, déploie l'algorithme de Algo de Dijkstra,
         càd donne une valeur à chaque case de la grille suivant sa proximité avec la cible en posX,posY
         """
         self.resetValue() #reset des valeurs
@@ -108,7 +129,7 @@ class Env:
         for vector in self.vector:
             xp, yp = (x+vector[0]+self.l) % self.l, (y+vector[1]+self.h) % self.h
             fil.append((xp, yp))
-        
+
         while fil : # tant qu'il y a des cases à compléter
             #Compteur du parcours
             count +=1
@@ -118,7 +139,7 @@ class Env:
             #On parcours les positions à mettre à jour
             for pos in fil:
                 case = self.getPosition(pos[0], pos[1])
-                if(case[1] == -1 and case[0] == None):
+                if(case[1] == -1 ):
                     self.setValue(pos[0], pos[1], count)
 
                     #On définit les voisins
@@ -140,10 +161,10 @@ class Env:
             xp, yp = (x+dx+self.l) % self.l, (y+dy+self.h) % self.h
             case = self.getPosition(xp, yp)
 
-            if case[0] == None:
+            # if case[0] == None:
                 #Si aucun agent on l'ajout dans les positions possibles
-                res += [((xp, yp),case[1])]
-
+            res += [((xp, yp),case[0], case[1])]
+        random.shuffle(res)
         return res
 
     def canMove(self, x, y):
@@ -182,9 +203,9 @@ class Env:
                     line += "A| "
                     lineVal += "M| "
             val += [lineVal]
-            print(line,end='', flush=True)
+            print(line)
         print()
         for tmp in val:
-            print(tmp,end='', flush=True)
-        print("Nb aggent : ", nbAgent,end='', flush=True)
+            print(tmp)
+        print("Nb agents :")
         print()

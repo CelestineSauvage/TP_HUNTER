@@ -19,9 +19,9 @@ class KeyListener(Thread):
                 self.change(3)
         elif k == keyboard.Key.left:
                 self.change(2)
-        else:
-                print("Bye")
-                sys.exit()
+        # else:
+        #         print("Bye")
+        #         sys.exit()
 
     def change(self, val):
         with verrou:

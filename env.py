@@ -57,6 +57,9 @@ class Env:
         """
         """
         return self.grid[posX][posY][1]
+    
+    def getPositionAgent (self, posX, posY):
+        return self.grid[posX][posY][0]
 
     ##########################################
     #   Opération primitive sur les agents  #
@@ -76,12 +79,17 @@ class Env:
         Permet de supprimer tous les agents morts
         """
         agents = []
+        dead = []
         size = len(self.l_agents)
-
+        
         for agent  in self.l_agents:
             if (agent.life != 0):
                 agents.append(agent)
+            else:
+                dead.append(agent)
         self.l_agents = agents
+        
+        return dead
 
     def generate(self, n, classAgent, data=[]):
         """

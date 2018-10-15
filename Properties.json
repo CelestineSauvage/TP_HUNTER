@@ -1,8 +1,6 @@
 {
   "gridSizeX":"50",
   "gridSizeY":"50",
-  "canvasSizeX":"",
-  "canvasSizeY":"",
   "boxSize":"15",
   "scheduling":"2",
   "nbTicks":"",
@@ -10,5 +8,8 @@
   "seed":"",
   "refresh":"1",
   "grid":"",
-  "sHunter":"3"
+  "sHunter":"3",
+  "SpeedAvatar":"1",
+  "SpeedHunter":"1",
+  "DefenderLife": "100"
 }

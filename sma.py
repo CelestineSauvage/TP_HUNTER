@@ -30,7 +30,8 @@ class SMA:
         self.env.generate(1, Avatar)
 
         self.env.generate(nHunter, Hunter, [1])
-        self.env.generate((l*h//6), Wall) # 1/6ème de la map est occupée par des murs
+        self.generate_maze()
+        # self.env.generate((l*h//6), Wall) # 1/6ème de la map est occupée par des murs
 
         self.view = View(l, h, size, self.env.l_agents)
 
@@ -43,6 +44,66 @@ class SMA:
 
         # time
         self.time = time
+
+    def generate_maze (self):
+        chamber = [(1, 1),(self.env.l-1, 1),(self.env.l-1, self.env.h-1),(1, self.env.h-1)]
+        l_walls = self.rec_generate_maze(chamber, [], [], 4)
+        self.env.generate2(l_walls, Wall)
+
+    def rec_generate_maze(self, chamber, l_vide, h_vide, minsize):
+        ll = chamber[0][0]
+        lr = chamber[1][0]
+        hl = chamber[0][1]
+        hr = chamber[2][1]
+
+        l = lr - ll #example (0, 0),(self.l, 0) -> l - 0
+        h = hr - hl #example (0, 0),(self.l, 0),(self.l, self.h)) -> h - 0
+
+        if (l*h < minsize) :
+            return []
+        else :
+            l_walls = []
+            newl_vide = []
+            newh_vide = []
+            #traçage verticale
+            l2 = random.randint(ll, lr)
+
+            #traçage horizontale
+            h2 = random.randint(hl, hr)
+            jct = (l2, h2) # jonction des 2 lignes
+
+            for i in range (hl, hr): # parcours vertical pour définir les murs ou non
+                if (not(i in h_vide)):
+                    wall = random.randint(0,4)
+                    if (wall > 0):
+                        l_walls += [(l2, i)]
+                    else :
+                        newh_vide += [i]
+
+            for j in range (ll, lr): # parcours horizontal pour définir les murs ou non
+                if (not(j in l_vide)):
+                    wall = random.randint(0,4)
+                    if (wall > 0):
+                        l_walls += [(j, h2)]
+                    else :
+                        newl_vide += [j]
+
+            # on calcule récursivement dans les 4 nouvelles cases les murs à placer
+
+            # en haut à gauche
+            l_walls += self.rec_generate_maze([(ll,hl), (l2-1,hl), (l2-1,h2-1), (ll,h2-1)], newl_vide, newh_vide, minsize)
+
+            # # en haut à droite
+            l_walls += self.rec_generate_maze([(l2+1,hl+1), (lr,hl+1), (lr,h2), (l2+1,h2)], newl_vide, newh_vide, minsize)
+            #
+            # # en bas à droite
+            l_walls += self.rec_generate_maze([(l2+1,h2+1), (lr,h2+1), (lr,hr), (l2+1,hr)], newl_vide, newh_vide, minsize)
+            #
+            # # en bas à gauche
+            l_walls += self.rec_generate_maze([(ll,h2), (l2-1,h2), (l2-1,hr-1), (ll,hr-1)], newl_vide, newh_vide, minsize)
+
+            return l_walls
+
 
     def turn(self):
         """

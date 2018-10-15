@@ -8,7 +8,6 @@ class Avatar(Agent):
         # position initiale de l'avatar
         super(Avatar, self).__init__(posX, posY)
 
-        # vector de direction (vector[0] = gauche/droite, vector[1] = haut/bas)
         self.vector = (0,1)
         self.keyL = KeyListener(self)
         self.keyL.start()

@@ -108,6 +108,15 @@ class Env:
                 self.l_agents.append(agent)
                 i += 1
 
+    def generate2(self, l_agents, classAgent, data=[]):
+        """
+        Place des agents sur la liste des positions
+        """
+        for pos in l_agents:
+            agent = classAgent(pos[0], pos[1], data)
+            self.setAgentPosition(agent, pos[0], pos[1])
+            self.l_agents.append(agent)
+
     def setAgentPosition(self, agent, posX, posY):
         """
         Set un agent à la position x, y sur la grille

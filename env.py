@@ -180,7 +180,8 @@ class Env:
             xp, yp = (x+dx+self.l) % self.l, (y+dy+self.h) % self.h
             case = self.getPosition(xp, yp)
 
-            res += [((xp, yp),case[0], case[1])]
+            if (case[1] != -1):
+                res += [((xp, yp),case[0], case[1])]
         random.shuffle(res)
         return res
 
@@ -214,7 +215,7 @@ class Env:
                 else:
                     nbAgent +=1
                     line += "A| "
-                    lineVal += "M| "
+                    lineVal += str(self.grid[x][y][1])+"| "
             val += [lineVal]
             print(line)
         print()

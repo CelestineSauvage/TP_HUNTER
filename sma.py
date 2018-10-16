@@ -112,6 +112,14 @@ class SMA:
                                 l_walls.append((px,py))
                     break
 
+        # On supprime des murs aléatoirement
+        for i in range(self.env.l):
+            for j in range (self.env.h):
+                if (not(l_grille[i][j])):
+                     wall = random.randint(0,10)
+                     if (wall == 0):
+                         l_grille[i][j] = True
+
 
         self.env.generate2(l_grille, Wall)
         # chamber = [(0, 0),(self.env.l-1, 0),(self.env.l-1, self.env.h-1),(0, self.env.h-1)]
@@ -209,6 +217,8 @@ class SMA:
                 for ag in self.env.l_agents:
                     if(ag.isAlive()):
                         ag.decide(self.env)
+
+        # self.env.printGrid()
 
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
     def run(self):

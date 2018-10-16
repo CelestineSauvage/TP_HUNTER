@@ -1,7 +1,7 @@
 {
-  "gridSizeX":"50",
-  "gridSizeY":"50",
-  "boxSize":"15",
+  "gridSizeX":"70",
+  "gridSizeY":"70",
+  "boxSize":"5",
   "scheduling":"2",
   "nbTicks":"",
   "time":"50",

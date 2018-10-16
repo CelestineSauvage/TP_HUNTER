@@ -57,7 +57,7 @@ class Env:
         """
         """
         return self.grid[posX][posY][1]
-    
+
     def getPositionAgent (self, posX, posY):
         return self.grid[posX][posY][0]
 
@@ -81,14 +81,14 @@ class Env:
         agents = []
         dead = []
         size = len(self.l_agents)
-        
+
         for agent  in self.l_agents:
             if agent.isAlive():
                 agents.append(agent)
             else:
                 dead.append(agent)
         self.l_agents = agents
-        
+
         return dead
 
     def generate(self, n, classAgent, data=[]):
@@ -108,14 +108,16 @@ class Env:
                 self.l_agents.append(agent)
                 i += 1
 
-    def generate2(self, l_agents, classAgent, data=[]):
+    def generate2(self, grille, classAgent, data=[]):
         """
         Place des agents sur la liste des positions
         """
-        for pos in l_agents:
-            agent = classAgent(pos[0], pos[1], data)
-            self.setAgentPosition(agent, pos[0], pos[1])
-            self.l_agents.append(agent)
+        for i in range(0, self.l):
+            for j in range(0, self.h):
+                if (not (grille[i][j])):
+                    agent = classAgent(i, j, data)
+                    self.setAgentPosition(agent, i, j)
+                    self.l_agents.append(agent)
 
     def setAgentPosition(self, agent, posX, posY):
         """

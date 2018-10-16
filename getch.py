@@ -6,26 +6,16 @@ verrou = RLock()
 
 class KeyListener(Thread):
 
-    def __init__(self, avatar):
+    def __init__(self, sma):
         Thread.__init__(self)
-        self.avatar = avatar
+        self.sma = sma
 
     def get(self, k):
-        if k == keyboard.Key.up:
-                self.change(1)
-        elif k == keyboard.Key.down:
-                self.change(0)
-        elif k == keyboard.Key.right:
-                self.change(3)
-        elif k == keyboard.Key.left:
-                self.change(2)
-        # else:
-        #         print("Bye")
-        #         sys.exit()
+        self.change(k)
 
     def change(self, val):
         with verrou:
-            self.avatar.on_press(val)
+            self.sma.on_press(val)
 
     def run(self):
             with keyboard.Listener(on_press=self.get) as listener:

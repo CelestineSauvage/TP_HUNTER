@@ -11,7 +11,10 @@ import json
 from core.Hunter import Hunter
 from core.Avatar import Avatar
 from core.Defender import Defender
+from core.Winner import Winner
 from core.Wall import Wall
+from getch import KeyListener
+
 
 
 from pprint import pprint
@@ -22,7 +25,7 @@ Contient la méthode run() qui effectue le tour de parole
 class SMA:
 
     def __init__(self, l, h, size, limite, refresh, time, grid, nHunter, speedAvatar, speedHunter, defenderLife):
-
+        
         #env
         self.env = Env(l, h, size)
 
@@ -47,6 +50,11 @@ class SMA:
         
         self.defenderLife = defenderLife 
         self.nbDefender = 0
+        self.winner = False
+        
+        self.keyL = KeyListener(self)
+        self.keyL.start()
+
 
     def turn(self):
         """
@@ -58,7 +66,8 @@ class SMA:
 
         if not (self.nturn % self.defenderLife) and self.nbDefender<4:
             self.env.generate(1, Defender, [self.defenderLife])
-        elif self.nbDefender == 4:
+        elif self.nbDefender == 4 and not self.winner:
+            self.winner = True
             self.env.generate(1, Winner)
 
         self.nturn+=1 # on incrémente le nombre de tour
@@ -82,6 +91,11 @@ class SMA:
     def run(self):
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
         self.view.mainloop()
+
+def on_press(self, key):
+    
+    for agent in self.env.l_agents:
+        agent.on_press(key)
 
 def parse():
     """

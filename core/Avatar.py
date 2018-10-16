@@ -1,5 +1,5 @@
 from core.Agent import Agent
-from getch import KeyListener
+from pynput import keyboard
 
 """
 """
@@ -8,9 +8,7 @@ class Avatar(Agent):
         # position initiale de l'avatar
         super(Avatar, self).__init__(posX, posY)
 
-        self.vector = (0,1)
-        self.keyL = KeyListener(self)
-        self.keyL.start()
+        self.vector = (0,1)        
         self.form = "circle"
         self.delay = data[0]
 
@@ -49,14 +47,20 @@ class Avatar(Agent):
 
         #On change le vector du pac man
         try:
-            if key == 0: #down
+            if key == keyboard.Key.down: #down
                 self.vector = (0, 1)
-            elif key == 1: #up
+            elif key == keyboard.Key.up: #up
                 self.vector = (0, -1)
-            elif key == 2: #left
+            elif key == keyboard.Key.left: #left
                 self.vector = (-1, 0)
-            elif key == 3: #right
+            elif key == keyboard.Key.right: #right
                 self.vector = (1, 0)
+            elif key == keyboard.KeyCode.from_char('o'):
+                if self.delay > 0:
+                    self.delay -=1
+            elif key == keyboard.KeyCode.from_char('p'):
+                self.delay += 1
+
         except AttributeError:
             print('special key {0} pressed'.format(
                 key))

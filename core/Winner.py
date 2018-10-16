@@ -24,4 +24,5 @@ class Winner(Agent):
         return 3
 
     def dead(self):
+        self.life = False
         print("Fini")

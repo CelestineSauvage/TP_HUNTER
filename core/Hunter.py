@@ -1,6 +1,7 @@
 import sys
 from core.Agent import Agent
 from operator import itemgetter
+from pynput import keyboard
 
 
 """
@@ -54,8 +55,17 @@ class Hunter(Agent):
                             env.setAgentPosition(self, newPos[0][0], newPos[0][1])
                             self.posX, self.posY = newPos[0]
                             return
-
+    def on_press(self, key):
+        #On change le vector du pac man
+        if key == keyboard.KeyCode.from_char('a'):
+            if self.delay > 0:
+                self.delay -=1
+        elif key == keyboard.KeyCode.from_char('z'):
+            self.delay += 1
+        else:
+            print("what")
     def getColor(self):
+
         return "red"
 
     def getType(self):

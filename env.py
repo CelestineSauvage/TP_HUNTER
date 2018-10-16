@@ -158,7 +158,7 @@ class Env:
             #On parcours les positions à mettre à jour
             for pos in fil:
                 case = self.getPosition(pos[0], pos[1])
-                if(case[1] == -1 ):
+                if(case[1] == -1 and (case[0] == None or case[0].getType() != 1)):
                     self.setValue(pos[0], pos[1], count)
 
                     #On définit les voisins
@@ -180,8 +180,6 @@ class Env:
             xp, yp = (x+dx+self.l) % self.l, (y+dy+self.h) % self.h
             case = self.getPosition(xp, yp)
 
-            # if case[0] == None:
-                #Si aucun agent on l'ajout dans les positions possibles
             res += [((xp, yp),case[0], case[1])]
         random.shuffle(res)
         return res
@@ -201,10 +199,6 @@ class Env:
     #########
 
     def printGrid(self):
-        # for width in self.grid:
-        #     for pos in width:
-        #         print(str(pos),end='', flush=True)
-        #     print(' ')
         nbAgent =0
         val =[]
         for y in range(self.h):

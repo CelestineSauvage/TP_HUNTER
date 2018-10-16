@@ -21,7 +21,7 @@ class Winner(Agent):
         return "blue"
 
     def getType(self):
-        return 3
+        return 4
 
     def dead(self):
         self.life = False

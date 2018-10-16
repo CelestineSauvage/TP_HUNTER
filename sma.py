@@ -6,6 +6,7 @@ from tkinter import *
 import random
 import time
 import json
+import sys
 
 
 from core.Hunter import Hunter
@@ -104,7 +105,7 @@ class SMA:
                             l_walls.append((px,py))
                     break
 
-
+        
         self.env.generate2(l_grille, Wall)
         # chamber = [(0, 0),(self.env.l-1, 0),(self.env.l-1, self.env.h-1),(0, self.env.h-1)]
         # l_walls = self.rec_generate_maze(chamber, [], [], 3)
@@ -188,11 +189,14 @@ class SMA:
 
             #On parcours les agent pour voir si un defender est mort
             for agent in dead:
-                if agent.getType() == 3:
+                if agent.getType() == 3 and not agent.natural:
                     self.nbDefender +=1
                     for agent in self.env.l_agents:
                         agent.fearMode = True
-
+                if agent.getType() == 0 or agent.getType() ==4:
+                    self.view.window.destroy()
+                    self.keyL.stop()
+                    sys.exit(0)
             for i in range(0,self.refresh): # taux de refresh de la page
                 # TOUR DE TOUS LES AGENTS
                 for ag in self.env.l_agents:
@@ -200,7 +204,6 @@ class SMA:
                         ag.decide(self.env)
 
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
-
     def run(self):
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
         self.view.mainloop()

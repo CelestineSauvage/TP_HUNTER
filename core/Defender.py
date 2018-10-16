@@ -9,6 +9,7 @@ class Defender(Agent):
 
         self.form = "circle"
         self.deadLine = data[0]
+        self.natural = False
 
     def decide(self, env):
         """
@@ -17,6 +18,7 @@ class Defender(Agent):
         self.time += 1
 
         if self.deadLine <= self.time:
+            self.natural = True
             self.dead()
 
     def getColor(self):

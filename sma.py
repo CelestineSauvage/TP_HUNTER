@@ -33,10 +33,8 @@ class SMA:
 
         #n
         #liste des agents
-        if (perc != 1):
-            self.env.generate((l*h*perc)//100, Wall) # 1/6ème de la map est occupée par des murs
-        else :
-            self.generate_maze()
+        self.perc = perc
+        self.generate_maze()
 
         self.env.generate(1, Avatar, [speedAvatar])
 
@@ -58,7 +56,7 @@ class SMA:
         self.nbDefender = 0
         self.winner = False
         self.pause = False
-
+        
         self.keyL = KeyListener(self)
         self.keyL.start()
 
@@ -94,12 +92,6 @@ class SMA:
                     #On détruit le mur entre les deux cases du laby
                     px2 = (wall[0] + (v[0]//2) +self.env.l) % self.env.l
                     py2 = (wall[1] + (v[1]//2) +self.env.h) % self.env.h
-                    # print("-------")
-                    # print((px,py))
-                    # print((wall))
-                    # print(v)
-                    # print((px2,py2))
-                    # print((v[0]//2), (v[1]//2))
                     l_grille[px2][py2] = True
 
                     # On ajoute ses voisins qui n'appartiennent pas au laby
@@ -116,7 +108,7 @@ class SMA:
         for i in range(self.env.l):
             for j in range (self.env.h):
                 if (not(l_grille[i][j])):
-                     wall = random.randint(0,10)
+                     wall = random.randint(0,self.perc)
                      if (wall == 0):
                          l_grille[i][j] = True
 
@@ -227,12 +219,12 @@ class SMA:
 
     def on_press(self, key):
         if key == keyboard.KeyCode.from_char('w'):
-            if(self.time>100):
-                self.time -= 100
+            if(self.time>50):
+                self.time -= 50
             else:
-                self.time = 50
+                self.time = 20
         elif key == keyboard.KeyCode.from_char('x'):
-            self.time +=100
+            self.time +=50
         elif key == keyboard.Key.space:
             self.pause = not self.pause
         else:

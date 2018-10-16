@@ -25,19 +25,21 @@ Contient la méthode run() qui effectue le tour de parole
 """
 class SMA:
 
-    def __init__(self, l, h, size, limite, refresh, time, grid, nHunter, speedAvatar, speedHunter, defenderLife):
+    def __init__(self, l, h, size, limite, refresh, time, grid, nHunter, speedAvatar, speedHunter, defenderLife, perc):
 
         #env
         self.env = Env(l, h, size)
 
         #n
         #liste des agents
-        self.generate_maze()
+        if (perc != 1):
+            self.env.generate((l*h*perc)//100, Wall) # 1/6ème de la map est occupée par des murs
+        else :
+            self.generate_maze()
 
         self.env.generate(1, Avatar, [speedAvatar])
 
         self.env.generate(nHunter, Hunter, [speedHunter])
-        # self.env.generate((l*h//6), Wall) # 1/6ème de la map est occupée par des murs
 
         self.view = View(l, h, size, self.env.l_agents)
 
@@ -101,6 +103,7 @@ class SMA:
                         if not l_grille[px][py]:
                             l_walls.append((px,py))
                     break
+
 
         self.env.generate2(l_grille, Wall)
         # chamber = [(0, 0),(self.env.l-1, 0),(self.env.l-1, self.env.h-1),(0, self.env.h-1)]
@@ -239,6 +242,7 @@ def main():
     speedAvatar = 1
     speedHunter = 1
     defenderLife = 2
+    perc = 1
 
     # parcours des options saisis par l'utilisateur
     if (data["gridSizeX"]):
@@ -267,8 +271,10 @@ def main():
         speedHunter = int(data["SpeedHunter"])
     if data["DefenderLife"]:
         defenderLife = int(data["DefenderLife"])
+    if data["perc"]:
+        perc = int(data["perc"])
 
-    game = SMA(l, h, size, limite, refresh, speed, grid, sHunter, speedAvatar, speedHunter, defenderLife)
+    game = SMA(l, h, size, limite, refresh, speed, grid, sHunter, speedAvatar, speedHunter, defenderLife, perc)
 
     game.run()
 

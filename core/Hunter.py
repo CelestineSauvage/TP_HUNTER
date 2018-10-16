@@ -62,10 +62,8 @@ class Hunter(Agent):
                 self.delay -=1
         elif key == keyboard.KeyCode.from_char('z'):
             self.delay += 1
-        else:
-            print("what")
+            
     def getColor(self):
-
         return "red"
 
     def getType(self):

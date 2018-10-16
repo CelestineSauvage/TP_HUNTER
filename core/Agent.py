@@ -34,5 +34,6 @@ class Agent:
     
     def isAlive(self):
         return self.life
+        
     def on_press(self, key):
         pass

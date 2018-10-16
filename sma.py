@@ -14,6 +14,7 @@ from core.Defender import Defender
 from core.Winner import Winner
 from core.Wall import Wall
 from getch import KeyListener
+from pynput import keyboard
 
 
 
@@ -51,6 +52,7 @@ class SMA:
         self.defenderLife = defenderLife 
         self.nbDefender = 0
         self.winner = False
+        self.pause = False
         
         self.keyL = KeyListener(self)
         self.keyL.start()
@@ -60,31 +62,32 @@ class SMA:
         """
         Déroulement d'un tour
         """
-        # nb de tours < limite ?
-        if (self.nturn == self.limite):
-            exit()
+        if not self.pause:
+            # nb de tours < limite ?
+            if (self.nturn == self.limite):
+                exit()
 
-        if not (self.nturn % self.defenderLife) and self.nbDefender<4:
-            self.env.generate(1, Defender, [self.defenderLife])
-        elif self.nbDefender == 4 and not self.winner:
-            self.winner = True
-            self.env.generate(1, Winner)
+            if not (self.nturn % self.defenderLife) and self.nbDefender<4:
+                self.env.generate(1, Defender, [self.defenderLife])
+            elif self.nbDefender == 4 and not self.winner:
+                self.winner = True
+                self.env.generate(1, Winner)
 
-        self.nturn+=1 # on incrémente le nombre de tour
-        dead = self.env.removeDeadAgent()
-        
-        #On parcours les agent pour voir si un defender est mort
-        for agent in dead:
-            if agent.getType() == 3:
-                self.nbDefender +=1
-                for agent in self.env.l_agents:
-                    agent.fearMode = True
+            self.nturn+=1 # on incrémente le nombre de tour
+            dead = self.env.removeDeadAgent()
+            
+            #On parcours les agent pour voir si un defender est mort
+            for agent in dead:
+                if agent.getType() == 3:
+                    self.nbDefender +=1
+                    for agent in self.env.l_agents:
+                        agent.fearMode = True
 
-        for i in range(0,self.refresh): # taux de refresh de la page
-            # TOUR DE TOUS LES AGENTS
-            for ag in self.env.l_agents:
-                if(ag.isAlive()):
-                    ag.decide(self.env)
+            for i in range(0,self.refresh): # taux de refresh de la page
+                # TOUR DE TOUS LES AGENTS
+                for ag in self.env.l_agents:
+                    if(ag.isAlive()):
+                        ag.decide(self.env)
 
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
 
@@ -92,10 +95,19 @@ class SMA:
         self.view.set_agent(self.time, self.env.l_agents, self.turn)
         self.view.mainloop()
 
-def on_press(self, key):
-    
-    for agent in self.env.l_agents:
-        agent.on_press(key)
+    def on_press(self, key):
+        if key == keyboard.KeyCode.from_char('w'):
+            if(self.time>100):
+                self.time -= 100
+            else:
+                self.time = 50
+        elif key == keyboard.KeyCode.from_char('x'):
+            self.time +=100
+        elif key == keyboard.Key.space:
+            self.pause = not self.pause
+        else:
+            for agent in self.env.l_agents:
+                agent.on_press(key)
 
 def parse():
     """

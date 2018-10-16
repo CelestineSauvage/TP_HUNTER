@@ -15,7 +15,7 @@ class KeyListener(Thread):
 
     def change(self, val):
         with verrou:
-            self.sma.on_press(val)
+                self.sma.on_press(val)
 
     def run(self):
             with keyboard.Listener(on_press=self.get) as listener:

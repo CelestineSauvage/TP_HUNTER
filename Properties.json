@@ -11,5 +11,6 @@
   "sHunter":"3",
   "SpeedAvatar":"1",
   "SpeedHunter":"5",
-  "DefenderLife": "100"
+  "DefenderLife": "100",
+  "perc": ""
 }

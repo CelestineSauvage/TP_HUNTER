@@ -92,8 +92,14 @@ class SMA:
                     l_grille[wall[0]][wall[1]] = True
 
                     #On détruit le mur entre les deux cases du laby
-                    px2 = (px + (v[0]//2) +self.env.l) % self.env.l
-                    py2 = (py + (v[1]//2) +self.env.h) % self.env.h
+                    px2 = (wall[0] + (v[0]//2) +self.env.l) % self.env.l
+                    py2 = (wall[1] + (v[1]//2) +self.env.h) % self.env.h
+                    # print("-------")
+                    # print((px,py))
+                    # print((wall))
+                    # print(v)
+                    # print((px2,py2))
+                    # print((v[0]//2), (v[1]//2))
                     l_grille[px2][py2] = True
 
                     # On ajoute ses voisins qui n'appartiennent pas au laby
@@ -102,10 +108,11 @@ class SMA:
                         py = (wall[1]+v[1]+self.env.h) % self.env.h
 
                         if not l_grille[px][py]:
-                            l_walls.append((px,py))
+                            if (not (px,py) in l_walls):
+                                l_walls.append((px,py))
                     break
 
-        
+
         self.env.generate2(l_grille, Wall)
         # chamber = [(0, 0),(self.env.l-1, 0),(self.env.l-1, self.env.h-1),(0, self.env.h-1)]
         # l_walls = self.rec_generate_maze(chamber, [], [], 3)
